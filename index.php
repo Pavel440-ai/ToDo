@@ -14,8 +14,17 @@
 	<!-- List -->
 	<ul class="list-group mb-3">
         <?php
+
+
+        $tasks = R::findAll('tasks');
+        if (empty($tasks)) {
             include(ROOT . 'templates/empty.tpl');
-            include(ROOT . 'templates/task.tpl');
+        } else {
+            foreach ($tasks as $task) {
+                include(ROOT . 'templates/task.php');
+            }
+        }
+
         ?>
 	</ul>
 
