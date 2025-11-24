@@ -1,6 +1,13 @@
 <?php
     require_once ('./config.php');
     require_once ('./db.php');
+
+//    p($_POST);
+    if (isset($_POST['title']) && !empty(trim($_POST['title']))) {
+        $task = R::dispense('tasks');
+        $task['title'] = trim($_POST['title']);
+        $id = R::store($task);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -13,19 +20,16 @@
 
 	<!-- List -->
 	<ul class="list-group mb-3">
-        <?php
-
-
-        $tasks = R::findAll('tasks');
-        if (empty($tasks)) {
-            include(ROOT . 'templates/empty.tpl');
-        } else {
-            foreach ($tasks as $task) {
-                include(ROOT . 'templates/task.php');
-            }
-        }
-
-        ?>
+	       <?php
+	       $tasks = R::findAll('tasks');
+	       if (empty($tasks)) {
+	           include(ROOT . 'templates/empty.tpl');
+	       } else {
+	           foreach ($tasks as $task) {
+	               include(ROOT . 'templates/task.php');
+	           }
+	       }
+	       ?>
 	</ul>
 
 	<!-- Form -->

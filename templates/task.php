@@ -11,7 +11,7 @@
 
 <li class="list-group-item d-flex justify-content-between">
     <span class="<?php echo $titleCSSclass; ?>">
-        <?php echo $task['title']; ?>
+        <?php echo htmlspecialchars($task['title']); ?>
     </span>
     <div class="btn-group">
         <?php if ($task['status'] === 'ready'): ?>
