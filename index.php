@@ -2,11 +2,17 @@
     require_once ('./config.php');
     require_once ('./db.php');
 
-//    p($_POST);
+    //    TASK: CREATE
     if (isset($_POST['title']) && !empty(trim($_POST['title']))) {
         $task = R::dispense('tasks');
         $task['title'] = trim($_POST['title']);
         $id = R::store($task);
+    }
+
+    // TASK: DELETE
+    if (isset($_GET['action']) && $_GET['action'] == 'delete' && $_GET['id'] && is_numeric($_GET['id'])) {
+        $task = R::load('tasks', $_GET['id']);
+        R::trash($task);
     }
 ?>
 
