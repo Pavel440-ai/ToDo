@@ -29,6 +29,24 @@
         }
     }
 
+    // GETTING ALL THE TASKS
+    $tasks = R::findAll('tasks');
+
+    // COUNT STATISTICS
+    $count_all = count($tasks);
+
+    // COMPLETED TASKS
+    $count_done = 0;
+    foreach ($tasks as $task) {
+        if (($task['status'] ?? 'active') === 'ready') {
+            $count_done++;
+        }
+    }
+
+    // UNCOMPLETED TASKS
+    $count_undone = $count_all - $count_done;
+
+
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +60,6 @@
 	<!-- List -->
 	<ul class="list-group mb-3">
 	       <?php
-	       $tasks = R::findAll('tasks');
 	       if (empty($tasks)) {
 	           include(ROOT . 'templates/empty.tpl');
 	       } else {
