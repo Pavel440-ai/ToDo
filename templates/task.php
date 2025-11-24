@@ -13,11 +13,12 @@
     <span class="<?php echo $titleCSSclass; ?>">
         <?php echo htmlspecialchars($task['title']); ?>
     </span>
-    <form class="btn-group">
+    <form class="btn-group" method="GET">
         <?php if ($task['status'] === 'ready'): ?>
-            <button class="btn btn-outline-dark btn-sm">Not finished yet</button>
+            <button name="action" value="changeStatus" class="btn btn-outline-dark btn-sm">Not
+                finished yet</button>
         <?php else: ?>
-            <button class="btn btn-outline-success btn-sm">Ready</button>
+            <button name="action" value="changeStatus" class="btn btn-outline-success btn-sm">Ready</button>
         <?php endif; ?>
 
         <input type="hidden" name="id" value="<?= $task['id']?>">

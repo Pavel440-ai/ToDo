@@ -2,10 +2,11 @@
     require_once ('./config.php');
     require_once ('./db.php');
 
-    //    TASK: CREATE
+    // TASK: CREATE
     if (isset($_POST['title']) && !empty(trim($_POST['title']))) {
         $task = R::dispense('tasks');
         $task['title'] = trim($_POST['title']);
+        $task['status'] = 'active';
         $id = R::store($task);
     }
 
@@ -14,6 +15,20 @@
         $task = R::load('tasks', $_GET['id']);
         R::trash($task);
     }
+
+    // TASK: CHANGE STATUS
+    if (isset($_GET['action']) && $_GET['action'] == 'changeStatus' && isset($_GET['id']) && is_numeric($_GET['id'])) {
+        $task = R::load('tasks', $_GET['id']);
+        if ($task->id) {
+            if ($task['status'] === 'ready') {
+                $task['status'] = 'active';
+            } else {
+                $task['status'] = 'ready';
+            }
+            R::store($task);
+        }
+    }
+
 ?>
 
 <!DOCTYPE html>
