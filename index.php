@@ -2,18 +2,31 @@
     require_once ('./config.php');
     require_once ('./db.php');
 
+    // Start session to maintain state
+    session_start();
+
     // TASK: CREATE
     if (isset($_POST['title']) && !empty(trim($_POST['title']))) {
         $task = R::dispense('tasks');
         $task['title'] = trim($_POST['title']);
         $task['status'] = 'active';
+        $task['created_at'] = date('Y-m-d H:i:s');
         $id = R::store($task);
+        
+        // Redirect to avoid form resubmission
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
     }
 
     // TASK: DELETE
-    if (isset($_GET['action']) && $_GET['action'] == 'delete' && $_GET['id'] && is_numeric($_GET['id'])) {
+    if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id']) && is_numeric($_GET['id'])) {
         $task = R::load('tasks', $_GET['id']);
-        R::trash($task);
+        if ($task->id) {
+            R::trash($task);
+        }
+        // Redirect to avoid keeping action in URL
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
     }
 
     // TASK: CHANGE STATUS
@@ -27,6 +40,9 @@
             }
             R::store($task);
         }
+        // Redirect to avoid keeping action in URL
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit();
     }
 
     // GETTING ALL THE TASKS
@@ -45,8 +61,6 @@
 
     // UNCOMPLETED TASKS
     $count_undone = $count_all - $count_done;
-
-
 ?>
 
 <!DOCTYPE html>
